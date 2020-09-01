@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-"""This file contains all the model information: the training steps, the batch size and the model iself."""
 
 # Difficulies:
 # -- Efficient Data Pipeline to pass large tensors
@@ -27,7 +26,7 @@ from random import randint
 
 
 from cnn_col_seg import model
-from data import create_data_with_labels, init_datagen, generator_
+from dataprocessing import create_data_with_labels, init_datagen, generator_
 
 
 train_dir = os.getcwd() + "/data/train_init/"
