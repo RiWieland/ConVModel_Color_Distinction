@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-"""This file contains the method that creates data and labels from a directory"""
-
 import os
 import cv2
 import numpy as np
@@ -9,9 +6,7 @@ from keras.preprocessing.image import ImageDataGenerator,img_to_array, load_img
 
 
 def create_data_with_labels(image_dir, batch):
-    """Gets numpy data and label array from images that are in the folders that are
-    in the folder which was given as a parameter. The folders that are in that folder
-    are identified by the mug they represent and the folder name starts with the label."""
+    
     mug_dirs = [f for f in os.listdir(image_dir) if not f.startswith('.')]
     mug_files = []
 
