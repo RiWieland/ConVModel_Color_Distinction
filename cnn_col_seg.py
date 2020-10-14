@@ -13,10 +13,8 @@ from keras.layers import Input, Conv2D, BatchNormalization, Dense ,Conv2DTranspo
 
 from keras.layers import Input, merge, Convolution2D, MaxPooling2D, UpSampling2D, Cropping2D, Concatenate
 
-def model():
+def model_git():
     input_image = Input(shape=(112, 112, 3))
-
-    # TOP BRANCH
 
     # first top convolution layer
 
@@ -83,7 +81,6 @@ def model():
         top_bot_conv4)
 
     top_bot_conv5 = MaxPooling2D(pool_size=(3, 3), strides=(2, 2))(top_bot_conv5)
-
 
     # first bottom convolution layer
 
@@ -152,7 +149,7 @@ def model():
 
     bottom_bot_conv5 = MaxPooling2D(pool_size=(3, 3), strides=(2, 2))(bottom_bot_conv5)
 
-    # CONCATENATE
+    #  CONCATENATE TOP AND BOTTOM BRANCH 
 
     conv_output = Concatenate()([top_top_conv5, top_bot_conv5, bottom_top_conv5, bottom_bot_conv5])
 
@@ -173,37 +170,6 @@ def model():
     output = Dense(units=4, activation='softmax')(FC_2)
 
     model = Model(inputs=input_image, outputs=output)
-
-    return model
-
-
-def model_test():
-    inputs = Input(shape=(112, 112, 3))
-    #s = Lambda(lambda x: x) (inputs)
-
-    c1 = Conv2D(3, (11, 11), strides=4, activation='relu')(inputs)
-    p1 = MaxPooling2D((3, 3), strides=2)(c1)
-    N1 = BatchNormalization()(p1)
-
-    c2a = Conv2D(64, (3, 3), strides=1, activation='relu')(N1)
-    p2a = MaxPooling2D((3, 3), strides=2)(c2a)
-    N2a = BatchNormalization()(p2a)
-
-    c2b = Conv2D(64, (3, 3), strides=1, activation='relu')(N1)
-    p2b = MaxPooling2D((3, 3), strides=2)(c2b)
-    N2b = BatchNormalization()(p2b)
-
-    c3a = Conv2D(96, (3,3), strides=1, activation='relu')(N2a)
-    c3b = Conv2D(96, (3,3), strides=1, activation='relu')(N2b)
-
-    c3 = concatenate([c3a, c3b])
-    c3 = Convolution2D(filters=192, kernel_size=(3, 3), strides=(1, 1), activation='relu', padding='same')(c3)
-    flatten = Flatten()(c3)
-
-    d1 = Dense(units=4096, activation='relu')(flatten)
-    #d2 = Dropout(0.3)(d1)
-    output = Dense(4, activation='softmax')(d1)
-    model = Model(input=inputs, output=output)
 
     return model
 
