@@ -7,38 +7,38 @@ from keras.preprocessing.image import ImageDataGenerator,img_to_array, load_img
 
 def create_data_with_labels(image_dir, batch):
     
-    mug_dirs = [f for f in os.listdir(image_dir) if not f.startswith('.')]
-    mug_files = []
+    dirs = [f for f in os.listdir(image_dir) if not f.startswith('.')]
+    files = []
 
-    for mug_dir in mug_dirs:
-        mug_image_files_ = [image_dir + mug_dir + '/' + '{0}'.format(f)
-                           for f in os.listdir(image_dir + mug_dir) if not f.startswith('.')]
+    for dir in dirs:
+        image_files = [image_dir + dir + '/' + '{0}'.format(f)
+                           for f in os.listdir(image_dir + dir) if not f.startswith('.')]
 
-        mug_image_files = mug_image_files_[0:int(batch)]
-        mug_files += [mug_image_files]
+        batch_files = image_files[0:int(batch)]
+        files += [batch_files]
 
-    num_images = len(mug_files[0])
+    num_images = len(files[0])
 
-    images_np_arr = np.empty([len(mug_files), num_images, 112, 112, 3], dtype=np.float32)
+    images_np_arr = np.empty([len(files), num_images, 112, 112, 3], dtype=np.float32)
 
-    for mug, _ in enumerate(mug_files):
-        for mug_image in range(num_images):
-            img = cv2.imread(mug_files[mug][mug_image])
+    for file, _ in enumerate(files):
+        for image in range(num_images):
+            img = cv2.imread(files[file][image])
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             img = img.astype(np.float32)
             img = cv2.resize(img, dsize=(112, 112), interpolation=cv2.INTER_CUBIC)
 
-            images_np_arr[mug][mug_image] = img / 255.
+            images_np_arr[file][image] = img / 255.
 
     data = images_np_arr[0]
-    labels = np.full(num_images, int(mug_dirs[0][0]))
+    labels = np.full(num_images, int(dirs[0][0]))
 
-    for i in range(1, len(mug_dirs)):
+    for i in range(1, len(dirs)):
     #for i in range(1, 500):
         data = np.append(data, images_np_arr[i], axis=0)
-        labels = np.append(labels, np.full(num_images, int(mug_dirs[i][0])), axis=0)
+        labels = np.append(labels, np.full(num_images, int(dirs[i][0])), axis=0)
 
-    return data, to_categorical(labels, len(mug_dirs))
+    return data, to_categorical(labels, len(dirs))
 
 def generator_(image_dir, batch, mode):
     while True:
