@@ -62,29 +62,3 @@ weights_name = os.getcwd() + '/Save/' + 'weights_' + now.strftime("%d_%m_%H%M") 
 model.save_weights(weights_name)
 
 
-exit()
-
-############################ check:
-pred_path = os.getcwd() + '/data/Pred_Plot/5.jpg'
-img_ = cv2.imread(pred_path)
-img = cv2.resize(img_, dsize=(112, 112), interpolation=cv2.INTER_CUBIC)
-
-img = np.expand_dims(img, axis=0)
-#model_path = os.getcwd() + '/Save/model_10_03_1404.h5'
-
-#print(model_path)
-test_dir = os.getcwd() + "/data/test/"
-
-model_ = load_model('model_10_03_1653.h5')
-X_val, y_val = create_data_with_labels(test_dir, 1000)
-
-for i in range(0,100):
-    ind = randint(0, 999)
-
-    print(model_.predict(np.expand_dims(X_val[int(ind)], axis=0), np.expand_dims(y_val[int(ind)], axis=0)))
-
-
-print(model_.metrics_names)
-print('end')
-print(model_.evaluate(X_val, y_val))
-exit()
